@@ -3,10 +3,62 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        {{ encore_entry_link_tags('app') }}
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+
+    <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+        <a class="navbar-brand" href="#">LeMeilleurCoin</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Déposer <!--<span class="sr-only">(current)</span>--></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Rechercher</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Mes annonces</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Mes favoris</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    </header>
+
         {% block body %}{% endblock %}
+
+    <footer>
+        <div class="container ">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-bottom text-center">
+        <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText2" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText2">
+        -->
+            <div class="col-2 col-md-3">
+                    <a class="nav-link" href="#">FAQ</a>
+            </div>
+        <div class="col-8 col-md-6">
+                    Adresse de l'entreprise<br>
+                    Code postal et ville<br>
+        </div>
+        <div class="col-2 col-md-3">
+                    <a class="nav-link" href="#">CGU</a>
+        </div>
+        <!--</div>-->
+    </nav>
+        </div>
+    </footer>
+
+        {{ encore_entry_script_tags('app') }}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
