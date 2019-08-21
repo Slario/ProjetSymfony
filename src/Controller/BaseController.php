@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class BaseController
- * @Route("/Main/")
+ * @Route("")
  *
  * @package App\Controller
  */

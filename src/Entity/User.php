@@ -7,11 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\OneToMany;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("username")
+ * @UniqueEntity("email")
  */
 class User implements UserInterface
 {
@@ -25,29 +28,33 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=30, unique=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="le champ ne peut pas être vide1")
+     *
      *
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=40, unique=true)
-     * @Assert\NotBlank()
-     *
+     * @Assert\NotBlank(message="le champ ne peut pas être vide2")
      * @Assert\Email()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Assert\NotBlank()
      *
      *
      */
     private $password;
 
     /**
-     * @ORM\Column(name="roles", type="array", options={"default":"STD", "fixed":true})
+     * @var string
+     */
+    private $plainPW;
+
+    /**
+     * @ORM\Column(name="roles", type="array")
      * @Assert\NotBlank()
      */
     private $roles;
@@ -74,6 +81,8 @@ class User implements UserInterface
 
 
     public function __construct() {
+        $this->dateRegistered = new \DateTime("now");
+        $this->roles[] = "ROLE_USER";
         $this->ads = new ArrayCollection();
         $this->favorites = new ArrayCollection();
     }
@@ -100,6 +109,24 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlainPW(): ?string
+    {
+        return $this->plainPW;
+    }
+
+    /**
+     * @param string $plainPW
+     */
+    public function setPlainPW(string $plainPW): self
+    {
+        $this->plainPW = $plainPW;
 
         return $this;
     }

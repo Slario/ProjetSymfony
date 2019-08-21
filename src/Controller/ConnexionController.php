@@ -5,12 +5,15 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Form\ConnectionType;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class ConnexionController
@@ -21,44 +24,12 @@ class ConnexionController extends Controller
 {
 
     /**
-     * @Route("", name="connexion_", methods={"GET", "POST"})
-     */
-    public function connexion(EntityManagerInterface $entityManager, Request $request, Session $session) {
-
-        // Entité à inflater
-        $user = new User();
-        $user->setDateRegistered(new \DateTime());
-
-        // Formulaire de recherche
-        $formUser = $this->createForm(UserType::class, $user);
-        $formUser->handleRequest($request);
-
-        if ($formUser->isSubmitted() && $formUser->isValid()) {
-
-            // Message de confirmation
-            $this->addFlash("success", "Connexion effectuée avec succès !");
-
-            // Enregistrement dans la BDD
-            $entityManager->persist($user);
-            $entityManager->flush();
-            $session->set('user', $user);
-
-            // Redirection
-            return $this->redirectToRoute("connexion_");
-        }
-
-        return $this->render('Connexion.html.twig', ["formUser" => $formUser->createView()]);
-    }
-
-    /**
      * @Route("subscribe", name="connexion_subscribe", methods={"GET", "POST"})
      */
-    public function subscribe(EntityManagerInterface $entityManager, Request $request, Session $session) {
+    public function subscribe(EntityManagerInterface $entityManager, Request $request, Session $session, UserPasswordEncoderInterface $encoder) {
 
         // Entité à inflater
         $user = new User();
-        $user->setDateRegistered(new \DateTime());
-        $user->setRole("STD");
 
         // Formulaire de recherche
         $formUser = $this->createForm(UserType::class, $user);
@@ -66,18 +37,31 @@ class ConnexionController extends Controller
 
         if ($formUser->isSubmitted() && $formUser->isValid()) {
 
+            // encodage du password
+            $pw = $encoder->encodePassword($user, $user->getPlainPW());
+            $user->setPassword($pw);
+            $user->setPlainPW("");
+
             // Message de confirmation
-            $this->addFlash("success", "Inscription effectuée avec succès !");
+            $this->addFlash("success", "Inscription effectuée avec succès, veuillez vous connecter !");
 
             // Enregistrement dans la BDD
             $entityManager->persist($user);
             $entityManager->flush();
-            $session->set('user', $user);
 
             // Redirection
-            return $this->redirectToRoute("connexion_subscribe");
+            return $this->get('security.authentication.guard_handler')
+                ->authenticateUserAndHandleSuccess(
+                    $user,
+                    $request,
+                    $this->get('App\Security\Authenticator'),
+                    'main'
+                );
+        }elseif ($formUser->isSubmitted() && !$formUser->isValid()){
+            $this->addFlash("danger", "Raté !");
         }
-        //$this->addFlash("danger", "Raté !");
+
+
 
         return $this->render('Subscribe.html.twig', ["formUser" => $formUser->createView()]);
     }

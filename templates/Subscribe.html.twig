@@ -20,13 +20,15 @@
 
 
         {{ form_start(formUser) }}
-        <div class="form-row">
-        {{ form_row(formUser.username, {'attr': {'class': 'form-group col-md-6 form-control'}}) }}
-        {{ form_row(formUser.password, {'attr': {'class': 'form-group col-md-6 form-control'}}) }}
-        </div>
         <div class="form-group">
-        {{ form_row(formUser.email, {'attr': {'class': 'form-control col-md-6'}} ) }}
+
+
+            {{ form_row(formUser.username, {'attr': {'class': 'form-group col-6 form-control'}}) }}
+            {{ form_row(formUser.email, {'attr': {'class': 'form-group form-control col-6'}} ) }}
+            {{ form_row(formUser.plainPW.first, {'attr': {'class': 'form-group col-6 form-control'}}) }}
+            {{ form_row(formUser.plainPW.second, {'attr': {'class': 'form-group col-6 form-control'}}) }}
         </div>
+
             <button type="submit">S'inscrire</button>
 
         {{ form_end(formUser) }}
