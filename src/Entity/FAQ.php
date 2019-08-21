@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FAQRepository")
@@ -17,12 +18,15 @@ class FAQ
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, unique=true)
+     * @Assert\NotBlank()
+     *
      */
     private $query;
 
     /**
      * @ORM\Column(type="string", length=500)
+     * @Assert\NotBlank()
      */
     private $answer;
 

@@ -51,14 +51,7 @@ class BaseController extends Controller
 
     }
 
-    /**
-     * @Route("Connexion", name="main_connexion", methods={"GET"})
-     */
-    public function connexion(){
 
-        return $this->render("Connexion.html.twig");
-
-    }
 
     /**
      * @Route("Deposer", name="main_deposer", methods={"GET"})

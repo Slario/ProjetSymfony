@@ -1,7 +1,37 @@
 {% extends "base.html.twig" %}
 {% block body %}
 
-Se connecter - s'inscrire
+    <h1>
+        Connection
+
+    </h1>
+
+    <div>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert-{{ label }}">
+            {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    </div>
+
+    <div>
+
+
+        {{ form_start(formUser) }}
+        <div class="form-row">
+            {{ form_row(formUser.email, {'attr': {'class': 'form-group form-control col-md-6'}} ) }}
+            {{ form_row(formUser.password, {'attr': {'class': 'form-group col-md-6 form-control'}}) }}
+        </div>
+            <button type="submit">Se connecter</button>
+        {{ form_end(formUser) }}
+
+    </div>
+    <div>
+        <a href="/Connexion/subscribe">Pas de compte ? Je m'inscris !</a>
+
+    </div>
 
 
 {% endblock %}
