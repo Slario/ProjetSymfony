@@ -30,19 +30,19 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=400)
-     *
+     * @Assert\NotBlank()
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=40)
-     *
+     * @Assert\NotBlank()
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=5)
-     *
+     * @Assert\NotBlank()
      */
     private $zip;
 
@@ -50,7 +50,7 @@ class Ad
 
     /**
      * @ORM\Column(type="integer")
-     *
+     * @Assert\NotBlank()
      */
     private $price;
 
