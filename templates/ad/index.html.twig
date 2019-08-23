@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ad index{% endblock %}
+
+{% block body %}
+    <h1>Annonces</h1>
+
+
+    {{ form_start(form) }}
+    {{ form_row(form.category) }}
+    {{ form_row(form.title) }}
+        <button class="btn btn-primary">Rechercher</button>
+    {{ form_end(form) }}
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>City</th>
+                <th>Zip</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>DateCreated</th>
+                <th>Creator</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ad in ads %}
+            <tr>
+                <td>{{ ad.id }}</td>
+                <td>{{ ad.title }}</td>
+                <td>{{ ad.description }}</td>
+                <td>{{ ad.city }}</td>
+                <td>{{ ad.zip }}</td>
+                <td>{{ ad.price }}</td>
+                <td>{{ ad.category }}</td>
+                <td>{{ ad.dateCreated ? ad.dateCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ad.owner }}</td>
+                <td>
+                    <a href="{{ path('ad_show', {'id': ad.id}) }}">show</a>
+                    {% if app.user %}
+                    {% if ad.owner == app.user %}
+                        <a href="{{ path('ad_edit', {'id': ad.id}) }}">edit</a>
+                        {% endif %}
+                    {% if ad not in app.user.favorites %}
+                        <a href="{{ path('ad_favo', {'id': ad.id}) }}"><button type="button">Add to favorites</button></a>
+                    {% else %}
+                        <a href="{{ path('delete_favo', {'id': ad.id}) }}"><button type="button">Delete from favorites</button></a>
+                    {% endif %}
+
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ad_new') }}">Create new</a>
+{% endblock %}

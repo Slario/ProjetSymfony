@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+
+{{ form_row(form.title) }}
+{{ form_row(form.description) }}
+{{ form_row(form.category) }}
+{{ form_row(form.city) }}
+{{ form_row(form.zip) }}
+{{ form_row(form.price) }}
+<div>
+    <button class="btn">{{ button_label|default('Enregistrer') }}</button>
+</div>
+    {{ form_end(form) }}

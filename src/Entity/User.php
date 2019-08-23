@@ -93,6 +93,25 @@ class User implements UserInterface
     }
 
 
+    public function getFavorites()
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Ad $favorite){
+        if (!$this->favorites->contains($favorite)){
+            $this->favorites[] = $favorite;
+        }
+    }
+
+    public function deleteFavorite(Ad $favorite){
+        if ($this->favorites->contains($favorite)){
+            $this->favorites->removeElement($favorite);
+        }
+    }
+
+
+
 
     public function setUsername(string $username): self
     {
@@ -217,4 +236,14 @@ class User implements UserInterface
     {
         return $this->email;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->username;
+    }
+
+
 }

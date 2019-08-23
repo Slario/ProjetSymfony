@@ -30,25 +30,27 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=400)
-     * @Assert\NotBlank()
+     *
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=40)
-     * @Assert\NotBlank()
+     *
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=5)
-     * @Assert\NotBlank()
+     *
      */
     private $zip;
 
+
+
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
+     *
      */
     private $price;
 
@@ -59,13 +61,22 @@ class Ad
     private $dateCreated;
 
     /**
+     * Many Ads have one Category. This is the owning side.
+     * @ManyToOne(targetEntity="Category", inversedBy="ads")
+     * @JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $category;
+
+
+
+    /**
      * Many Ads are in the favorites of Many Users.
      * @ManyToMany(targetEntity="User", mappedBy="favorites")
      */
     private $users;
 
     /**
-     * Many Ads have one owner. This is the owning side.
+     * One Owner may have Many Ads. This is the owning side.
      * @ManyToOne(targetEntity="User", inversedBy="ads")
      * @JoinColumn(name="owner_id", referencedColumnName="id")
      */
@@ -73,6 +84,7 @@ class Ad
 
     public function __construct() {
         $this->users = new ArrayCollection();
+        $this->dateCreated = new \DateTime();
     }
 
     public function getId(): ?int
@@ -100,6 +112,20 @@ class Ad
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+
+    public function setCategory($category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
@@ -148,6 +174,42 @@ class Ad
     public function setDateCreated(\DateTimeInterface $dateCreated): self
     {
         $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param mixed $users
+     */
+    public function setUsers($users): self
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }

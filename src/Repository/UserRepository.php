@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Ad;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +49,23 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param User $user
+     * @param Ad $ad
+     * @param EntityManagerInterface $entityManager
+     * @return User|null
+     */
+    public function addToFavorites(User $user, Ad $ad, EntityManagerInterface $entityManager): ?User
+    {
+        $u = $this->findOneBy(['id' => $user->getId()]);
+        $u->addFavorite($ad);
+        $entityManager->persist($u);
+        $entityManager->flush();
+
+        return $u;
+
+    }
+
+
 }

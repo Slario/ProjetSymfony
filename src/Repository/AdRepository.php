@@ -47,4 +47,18 @@ class AdRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByTitleOrCategory($title, $category)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.title LIKE :title')
+            ->setParameter('title', '%'.$title.'%')
+            ->andWhere('a.category = :category')
+            ->setParameter('category', $category)
+            ->getQuery()
+            ->getResult()
+
+            ;
+    }
+
 }

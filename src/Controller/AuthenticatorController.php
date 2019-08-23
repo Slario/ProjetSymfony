@@ -33,7 +33,7 @@ class AuthenticatorController extends Controller
      */
     public function logout()
     {
-        $this->addFlash("success", "Vous venez de vous déconnecter");
-        //return $this->render('Accueil.html.twig');
+        //$this->addFlash("success", "Vous venez de vous déconnecter");
+        return $this->render('Accueil.html.twig');
     }
 }
